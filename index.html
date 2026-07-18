@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NE Weather Live</title>
+
+<meta name="description" content="Live Weather Dashboard for Northeast India">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/weather.css">
+<link rel="stylesheet" href="css/clock.css">
+<link rel="stylesheet" href="css/animations.css">
+
+</head>
+
+<body>
+
+<!-- ================================= -->
+<!-- Animated Weather Background -->
+<!-- ================================= -->
+
+<div id="background">
+
+<div id="sky-gradient"></div>
+
+<div id="sun"></div>
+
+<div id="moon"></div>
+
+<div id="stars"></div>
+
+<div id="cloud-layer-1">
+
+    <div class="cloud medium"><span></span></div>
+    <div class="cloud large"><span></span></div>
+    <div class="cloud small"><span></span></div>
+    <div class="cloud large"><span></span></div>
+    <div class="cloud medium"><span></span></div>
+    <div class="cloud small"><span></span></div>
+
+</div>
+
+<div id="cloud-layer-2">
+
+    <div class="cloud small"><span></span></div>
+    <div class="cloud medium"><span></span></div>
+    <div class="cloud large"><span></span></div>
+    <div class="cloud medium"><span></span></div>
+    <div class="cloud small"><span></span></div>
+    <div class="cloud large"><span></span></div>
+
+</div>
+
+<div id="wind-layer">
+
+    <div class="wind"></div>
+    <div class="wind"></div>
+    <div class="wind"></div>
+    <div class="wind"></div>
+    <div class="wind"></div>
+
+</div>
+
+<div id="rain-layer"></div>
+
+<div id="snow-layer"></div>
+
+<div id="fog-layer"></div>
+
+<div id="lightning"></div>
+
+<div id="rainbow"></div>
+
+<div id="night-glow"></div>
+
+</div>
+
+<!-- ================================= -->
+<!-- Main Container -->
+<!-- ================================= -->
+
+<div class="dashboard">
+
+<!-- ================================= -->
+<!-- Header -->
+<!-- ================================= -->
+
+<header>
+
+<div class="logo-area">
+
+<h1>NE Weather Live</h1>
+
+<p>Northeast India Weather Channel</p>
+
+</div>
+
+<div class="header-right">
+
+<div class="live-box">
+
+<span class="live-dot"></span>
+
+LIVE
+
+</div>
+
+<div class="clock-card">
+
+    <div id="analog-clock">
+
+        <!-- Clock Numbers -->
+        <div class="clock-number number12">12</div>
+        <div class="clock-number number3">3</div>
+        <div class="clock-number number6">6</div>
+        <div class="clock-number number9">9</div>
+
+        <!-- Clock Hands -->
+        <div class="hour-hand"></div>
+
+        <div class="minute-hand"></div>
+
+        <div class="second-hand"></div>
+
+        <!-- Center Pin -->
+        <div class="clock-center"></div>
+
+    </div>
+
+</div>
+
+
+
+<div id="digital-time">
+
+00:00:00
+
+</div>
+
+<div id="date-text">
+
+Loading...
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ================================= -->
+<!-- Current Weather -->
+<!-- ================================= -->
+
+<section class="current-weather">
+
+<div class="weather-scene">
+
+<div id="animated-weather-icon"></div>
+
+</div>
+
+<div class="weather-main">
+
+<h2 id="cityName">
+
+Haflong
+
+</h2>
+
+<p id="weatherCondition">
+
+Loading Weather...
+
+</p>
+
+<div class="temperature">
+
+<span id="temperature">
+
+--
+
+</span>
+
+<span class="degree">
+
+°C
+
+</span>
+
+</div>
+
+<div class="high-low">
+
+H:
+<span id="tempMax">--</span>°
+
+|
+
+L:
+<span id="tempMin">--</span>°
+
+</div>
+
+</div>
+
+</section>
+<!-- ================================= -->
+<!-- Weather Details -->
+<!-- ================================= -->
+
+<section class="weather-details">
+
+    <div class="details-header">
+        <h2>Current Conditions</h2>
+    </div>
+
+    <div class="details-grid">
+
+        <div class="detail-card">
+            <i class="bi bi-thermometer-half"></i>
+            <span class="label">Feels Like</span>
+            <span class="value" id="feelsLike">--°C</span>
+        </div>
+
+        <div class="detail-card">
+            <i class="bi bi-droplet-fill"></i>
+            <span class="label">Humidity</span>
+            <span class="value" id="humidity">--%</span>
+        </div>
+
+        <div class="detail-card">
+            <i class="bi bi-wind"></i>
+            <span class="label">Wind Speed</span>
+            <span class="value" id="windSpeed">-- km/h</span>
+        </div>
+
+        <div class="detail-card">
+            <i class="bi bi-compass"></i>
+            <span class="label">Wind Direction</span>
+            <span class="value" id="windDirection">--</span>
+        </div>
+
+        <div class="detail-card">
+            <i class="bi bi-speedometer2"></i>
+            <span class="label">Pressure</span>
+            <span class="value" id="pressure">-- hPa</span>
+        </div>
+
+        <div class="detail-card">
+            <i class="bi bi-eye-fill"></i>
+            <span class="label">Visibility</span>
+            <span class="value" id="visibility">-- km</span>
+        </div>
+
+        <div class="detail-card">
+            <i class="bi bi-brightness-high-fill"></i>
+            <span class="label">UV Index</span>
+            <span class="value" id="uvIndex">--</span>
+        </div>
+
+        <div class="detail-card">
+            <i class="bi bi-moisture"></i>
+            <span class="label">Dew Point</span>
+            <span class="value" id="dewPoint">--°C</span>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- Sun & Moon Information -->
+<!-- ================================= -->
+
+<section class="sun-card">
+
+    <div class="section-title">
+        <h2>Sun & Moon</h2>
+    </div>
+
+    <div class="sun-grid">
+
+        <div class="sun-item">
+            <i class="bi bi-sunrise-fill"></i>
+            <span>Sunrise</span>
+            <strong id="sunrise">--:--</strong>
+        </div>
+
+        <div class="sun-item">
+            <i class="bi bi-sunset-fill"></i>
+            <span>Sunset</span>
+            <strong id="sunset">--:--</strong>
+        </div>
+
+        <div class="sun-item">
+            <i class="bi bi-moon-stars-fill"></i>
+            <span>Moon Phase</span>
+            <strong id="moonPhase">--</strong>
+        </div>
+
+        <div class="sun-item">
+            <i class="bi bi-clock-history"></i>
+            <span>Day Length</span>
+            <strong id="dayLength">--</strong>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- Air Quality -->
+<!-- ================================= -->
+
+<section class="air-quality-card">
+
+    <div class="section-title">
+        <h2>Air Quality</h2>
+    </div>
+
+    <div class="aqi-container">
+
+        <div class="aqi-circle">
+
+            <span id="aqiValue">--</span>
+
+        </div>
+
+        <div class="aqi-info">
+
+            <h3 id="aqiStatus">
+                Loading...
+            </h3>
+
+            <p id="aqiDescription">
+                Air quality information will appear here.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- Weather Highlights -->
+<!-- ================================= -->
+
+<section class="highlights">
+
+    <div class="section-title">
+        <h2>Weather Highlights</h2>
+    </div>
+
+    <div class="highlight-grid">
+
+        <div class="highlight-card">
+            <i class="bi bi-cloud-drizzle-fill"></i>
+            <span>Rain Chance</span>
+            <strong id="rainChance">--%</strong>
+        </div>
+
+        <div class="highlight-card">
+            <i class="bi bi-cloud-lightning-rain-fill"></i>
+            <span>Storm Risk</span>
+            <strong id="stormRisk">--</strong>
+        </div>
+
+        <div class="highlight-card">
+            <i class="bi bi-cloud-fog2-fill"></i>
+            <span>Cloud Cover</span>
+            <strong id="cloudCover">--%</strong>
+        </div>
+
+        <div class="highlight-card">
+            <i class="bi bi-water"></i>
+            <span>Precipitation</span>
+            <strong id="precipitation">-- mm</strong>
+        </div>
+
+    </div>
+
+</section>
+<!-- ================================= -->
+<!-- 7-Day Forecast -->
+<!-- ================================= -->
+
+<section class="forecast-section">
+
+    <div class="section-title">
+        <h2>7-Day Forecast</h2>
+    </div>
+
+    <div id="forecastContainer" class="forecast-container">
+
+        <div class="forecast-card">
+            <div class="forecast-day">Mon</div>
+            <div class="forecast-icon"></div>
+            <div class="forecast-temp">
+                <span>30°</span>
+                <small>22°</small>
+            </div>
+        </div>
+
+        <div class="forecast-card">
+            <div class="forecast-day">Tue</div>
+            <div class="forecast-icon"></div>
+            <div class="forecast-temp">
+                <span>31°</span>
+                <small>23°</small>
+            </div>
+        </div>
+
+        <div class="forecast-card">
+            <div class="forecast-day">Wed</div>
+            <div class="forecast-icon"></div>
+            <div class="forecast-temp">
+                <span>29°</span>
+                <small>21°</small>
+            </div>
+        </div>
+
+        <div class="forecast-card">
+            <div class="forecast-day">Thu</div>
+            <div class="forecast-icon"></div>
+            <div class="forecast-temp">
+                <span>28°</span>
+                <small>20°</small>
+            </div>
+        </div>
+
+        <div class="forecast-card">
+            <div class="forecast-day">Fri</div>
+            <div class="forecast-icon"></div>
+            <div class="forecast-temp">
+                <span>30°</span>
+                <small>22°</small>
+            </div>
+        </div>
+
+        <div class="forecast-card">
+            <div class="forecast-day">Sat</div>
+            <div class="forecast-icon"></div>
+            <div class="forecast-temp">
+                <span>32°</span>
+                <small>24°</small>
+            </div>
+        </div>
+
+        <div class="forecast-card">
+            <div class="forecast-day">Sun</div>
+            <div class="forecast-icon"></div>
+            <div class="forecast-temp">
+                <span>31°</span>
+                <small>23°</small>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- Northeast Cities -->
+<!-- ================================= -->
+
+<section class="cities-section">
+
+    <div class="section-title">
+        <h2>Northeast Cities</h2>
+    </div>
+
+    <div id="citiesContainer" class="cities-grid">
+
+        <!-- Filled dynamically -->
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- Live Weather Radar -->
+<!-- ================================= -->
+
+<section class="radar-section">
+
+    <div class="section-title">
+        <h2>Live Weather Radar</h2>
+    </div>
+
+    <div id="map" class="weather-map"></div>
+
+</section>
+
+<!-- ================================= -->
+<!-- Breaking Weather Alert -->
+<!-- ================================= -->
+
+<section class="alert-section">
+
+    <div class="alert-header">
+
+        <i class="bi bi-exclamation-triangle-fill"></i>
+
+        <span>Breaking Weather Alert</span>
+
+    </div>
+
+    <div id="weatherAlert" class="alert-body">
+
+        No active weather alerts.
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- Weather Statistics -->
+<!-- ================================= -->
+
+<section class="statistics-section">
+
+    <div class="section-title">
+        <h2>Today's Statistics</h2>
+    </div>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <span class="stat-title">Maximum Temp</span>
+            <h3 id="todayMax">--°C</h3>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-title">Minimum Temp</span>
+            <h3 id="todayMin">--°C</h3>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-title">Rainfall</span>
+            <h3 id="todayRain">-- mm</h3>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-title">Humidity</span>
+            <h3 id="todayHumidity">--%</h3>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- Current Location Info -->
+<!-- ================================= -->
+
+<section class="location-section">
+
+    <div class="location-card">
+
+        <i class="bi bi-geo-alt-fill"></i>
+
+        <div>
+
+            <h3 id="locationName">
+                Haflong
+            </h3>
+
+            <p id="locationState">
+                Dima Hasao, Assam, India
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ================================= -->
+<!-- Live Weather Ticker -->
+<!-- ================================= -->
+
+<section class="ticker-section">
+
+    <div class="ticker-label">
+
+        <i class="bi bi-broadcast-pin"></i>
+
+        LIVE WEATHER
+
+    </div>
+
+    <div class="ticker-wrapper">
+
+        <div id="weatherTicker" class="ticker-text">
+
+            Loading latest weather updates...
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- Bottom Information Bar -->
+<!-- ================================= -->
+
+<section class="bottom-bar">
+
+    <div class="bottom-item">
+
+        <i class="bi bi-arrow-repeat"></i>
+
+        Last Updated
+
+        <strong id="lastUpdated">
+
+            --:--
+
+        </strong>
+
+    </div>
+
+    <div class="bottom-item">
+
+        <i class="bi bi-globe2"></i>
+
+        Northeast India
+
+    </div>
+
+    <div class="bottom-item">
+
+        <i class="bi bi-cloud-sun-fill"></i>
+
+        Visual Crossing API
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- Footer -->
+<!-- ================================= -->
+
+<footer>
+
+    <div class="footer-left">
+
+        <h3>NE Weather Live</h3>
+
+        <p>24×7 Live Weather for Northeast India</p>
+
+    </div>
+
+    <div class="footer-right">
+
+        <span>
+
+            Designed for OBS Studio
+
+        </span>
+
+        <span>
+
+            © 2026 NE Weather Live
+
+        </span>
+
+    </div>
+
+</footer>
+
+</div>
+<!-- End Dashboard -->
+
+<!-- ================================= -->
+<!-- JavaScript Libraries -->
+<!-- ================================= -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- ================================= -->
+<!-- Configuration -->
+<!-- ================================= -->
+
+<script src="config.js"></script>
+
+<!-- ================================= -->
+<!-- Application Scripts -->
+<!-- ================================= -->
+
+<script src="js/clock.js"></script>
+<script src="js/background.js"></script>
+<script src="js/weather.js"></script>
+<script src="js/forecast.js"></script>
+<script src="js/cities.js"></script>
+<script src="js/radar.js"></script>
+<script src="js/ticker.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
