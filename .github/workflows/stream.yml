@@ -31,7 +31,7 @@ jobs:
           sleep 5
           ffmpeg -f x11grab -video_size 1280x720 -framerate 30 -i :99 \
             -c:v libx264 -preset veryfast -b:v 2500k -maxrate 2500k -bufsize 5000k \
-            -pix_fmt yuv420p -g 60 -f flv rtmp://a.rtmp.youtube.com/live2/${{ secrets.YT_STREAM_KEY }} \
+            -pix_fmt yuv420p -g 60 -f flv rtmp://a.rtmps.youtube.com/live2/${{ secrets.YT_STREAM_KEY }} \
             -t 19800
 
       - name: Trigger next run
