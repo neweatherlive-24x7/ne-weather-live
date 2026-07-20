@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>NE Weather Live</title>
+
+<meta name="description"
+      content="24x7 Live Weather Updates of North East India">
+
+<meta name="theme-color"
+      content="#0b1f3a">
+
+<link rel="preconnect"
+      href="https://api.open-meteo.com">
+
+<link rel="stylesheet"
+      href="style.css">
+
+</head>
+
+<body>
+
+    <div id="loading-screen">
+
+    <div class="loading-content">
+
+        <div class="loading-logo">
+            🌦️
+        </div>
+
+        <h1 class="loading-title">
+            NE WEATHER LIVE
+        </h1>
+
+        <p class="loading-subtitle">
+            24×7 Live Weather Channel
+        </p>
+
+        <div class="loading-status">
+            Initializing Weather System...
+        </div>
+
+        <div class="loading-progress">
+
+            <div class="loading-progress-fill">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="app">
+
+<!-- =======================================
+                ANIMATED BACKGROUND
+======================================= -->
+
+<div id="background">
+
+    <canvas id="weather-canvas"></canvas>
+
+    <div id="sky-gradient"></div>
+
+    <div id="sun"></div>
+
+    <div id="moon"></div>
+
+    <div id="lightning"></div>
+
+    <div class="bg-layer bg1"></div>
+
+    <div class="bg-layer bg2"></div>
+
+    <div class="bg-layer bg3"></div>
+
+</div>
+
+<!-- =======================================
+                HEADER
+======================================= -->
+
+<header id="header">
+
+<div id="header-top">
+
+<div id="brand">
+
+<div id="logo">
+
+🌦️
+
+</div>
+
+<div id="brand-text">
+
+<h1 id="title">
+
+NE WEATHER LIVE
+
+</h1>
+
+<p id="subtitle">
+
+24×7 Live Weather Channel
+
+</p>
+
+</div>
+
+</div>
+
+<div id="header-right">
+
+<div id="live-box">
+
+<span id="live-dot"></span>
+
+<span id="live-text">
+
+LIVE
+
+</span>
+
+</div>
+
+<div id="clock-section">
+<!-- =======================================
+            ANALOG CLOCK
+======================================= -->
+
+<div id="analog-clock">
+    <div class="clock-face">
+
+        <div class="marker m1"></div>
+        <div class="marker m2"></div>
+
+        <div class="marker m4"></div>
+        <div class="marker m5"></div>
+
+        <div class="marker m7"></div>
+        <div class="marker m8"></div>
+
+        <div class="marker m10"></div>
+        <div class="marker m11"></div>
+        <div class="clock-number n12">12</div>
+<div class="clock-number n3">3</div>
+<div class="clock-number n6">6</div>
+<div class="clock-number n9">9</div>
+
+        <div class="hand hour-hand"></div>
+        <div class="hand minute-hand"></div>
+        <div class="hand second-hand"></div>
+        <div class="clock-center"></div>
+
+    </div>
+
+</div>
+<div id="clock">
+
+00:00:00
+
+</div>
+
+<div id="date">
+
+Monday, 01 January 2026
+
+</div>
+
+</div>
+
+</div>
+
+</div> <!-- header-right -->
+
+</div> <!-- header-top -->
+...
+</div>
+
+<div id="header-info">
+
+    <div class="header-item">
+        📍 <span id="header-city">Haflong, Assam</span>
+    </div>
+
+    <div class="header-item">
+        🌡️ <span id="header-temp">--°C</span>
+    </div>
+
+    <div class="header-item">
+        💧 <span id="header-humidity">--%</span>
+    </div>
+
+    <div class="header-item">
+        💨 <span id="header-wind">-- km/h</span>
+    </div>
+
+    <div class="header-item">
+        🌫️ <span id="header-aqi">AQI --</span>
+    </div>
+
+    <div class="header-item">
+        🔄 <span id="header-update">Just Now</span>
+    </div>
+
+</div>
+
+</header>
+
+
+<!-- =======================================
+                MAIN
+======================================= -->
+
+<main id="main">
+
+<!-- =======================================
+        FRAME 1 : CURRENT WEATHER
+======================================= -->
+
+<section class="frame active" id="frame-city">
+
+    <div class="city-weather">
+
+        <h1 id="city-name">
+            Haflong
+        </h1>
+
+        <h2 id="city-state">
+            Assam
+        </h2>
+
+        <div id="city-icon">
+            🌤️
+        </div>
+
+        <div id="city-temperature">
+            28°
+        </div>
+
+        <div id="city-condition">
+            Partly Cloudy
+        </div>
+
+        <div id="city-extra">
+
+            <div class="city-info">
+                💧 Humidity
+                <span id="city-humidity">--%</span>
+            </div>
+
+            <div class="city-info">
+                💨 Wind
+                <span id="city-wind">-- km/h</span>
+            </div>
+
+            <div class="city-info">
+                🧭 Pressure
+                <span id="city-pressure">----</span>
+            </div>
+
+            <div class="city-info">
+                👁 Visibility
+                <span id="city-visibility">-- km</span>
+            </div>
+
+            <div class="city-info">
+                ☀ UV Index
+                <span id="city-uv">--</span>
+            </div>
+
+            <div class="city-info">
+                🌅 Sunrise
+                <span id="city-sunrise">--</span>
+            </div>
+
+            <div class="city-info">
+                🌇 Sunset
+                <span id="city-sunset">--</span>
+            </div>
+
+            <div class="city-info">
+                🌡 Feels Like
+                <span id="city-feels">--°</span>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- =======================================
+        FRAME 2 : NORTH EAST OVERVIEW
+======================================= -->
+
+<section class="frame" id="frame-overview">
+  <!-- =======================================
+        NORTH EAST OVERVIEW
+======================================= -->
+
+<div class="frame-title">
+
+    <h2>North East India Overview</h2>
+
+    <p>Current Weather Across All Eight States</p>
+
+</div>
+
+<div id="state-grid">
+
+    <!-- Assam -->
+
+    <div class="state-card">
+
+        <div class="state-name">
+            Assam
+        </div>
+
+        <div class="state-icon"
+             id="icon-assam">
+            🌤️
+        </div>
+
+        <div class="state-temp"
+             id="temp-assam">
+            --°
+        </div>
+
+        <div class="state-condition"
+             id="condition-assam">
+            Loading...
+        </div>
+
+    </div>
+
+    <!-- Arunachal Pradesh -->
+
+    <div class="state-card">
+
+        <div class="state-name">
+            Arunachal Pradesh
+        </div>
+
+        <div class="state-icon"
+             id="icon-arunachal">
+            ☁️
+        </div>
+
+        <div class="state-temp"
+             id="temp-arunachal">
+            --°
+        </div>
+
+        <div class="state-condition"
+             id="condition-arunachal">
+            Loading...
+        </div>
+
+    </div>
+
+    <!-- Manipur -->
+
+    <div class="state-card">
+
+        <div class="state-name">
+            Manipur
+        </div>
+
+        <div class="state-icon"
+             id="icon-manipur">
+            🌦️
+        </div>
+
+        <div class="state-temp"
+             id="temp-manipur">
+            --°
+        </div>
+
+        <div class="state-condition"
+             id="condition-manipur">
+            Loading...
+        </div>
+
+    </div>
+
+    <!-- Meghalaya -->
+
+    <div class="state-card">
+
+        <div class="state-name">
+            Meghalaya
+        </div>
+
+        <div class="state-icon"
+             id="icon-meghalaya">
+            🌧️
+        </div>
+
+        <div class="state-temp"
+             id="temp-meghalaya">
+            --°
+        </div>
+
+        <div class="state-condition"
+             id="condition-meghalaya">
+            Loading...
+        </div>
+
+    </div>
+
+    <!-- Mizoram -->
+
+    <div class="state-card">
+
+        <div class="state-name">
+            Mizoram
+        </div>
+
+        <div class="state-icon"
+             id="icon-mizoram">
+            🌤️
+        </div>
+
+        <div class="state-temp"
+             id="temp-mizoram">
+            --°
+        </div>
+
+        <div class="state-condition"
+             id="condition-mizoram">
+            Loading...
+        </div>
+
+    </div>
+
+    <!-- Nagaland -->
+
+    <div class="state-card">
+
+        <div class="state-name">
+            Nagaland
+        </div>
+
+        <div class="state-icon"
+             id="icon-nagaland">
+            🌥️
+        </div>
+
+        <div class="state-temp"
+             id="temp-nagaland">
+            --°
+        </div>
+
+        <div class="state-condition"
+             id="condition-nagaland">
+            Loading...
+        </div>
+
+    </div>
+
+    <!-- Sikkim -->
+
+    <div class="state-card">
+
+        <div class="state-name">
+            Sikkim
+        </div>
+
+        <div class="state-icon"
+             id="icon-sikkim">
+            ❄️
+        </div>
+
+        <div class="state-temp"
+             id="temp-sikkim">
+            --°
+        </div>
+
+        <div class="state-condition"
+             id="condition-sikkim">
+            Loading...
+        </div>
+
+    </div>
+
+    <!-- Tripura -->
+
+    <div class="state-card">
+
+        <div class="state-name">
+            Tripura
+        </div>
+
+        <div class="state-icon"
+             id="icon-tripura">
+            🌦️
+        </div>
+
+        <div class="state-temp"
+             id="temp-tripura">
+            --°
+        </div>
+
+        <div class="state-condition"
+             id="condition-tripura">
+            Loading...
+        </div>
+
+    </div>
+
+</div>
+
+<div id="overview-footer">
+
+    <div class="overview-box">
+
+        <span class="overview-label">
+            Warmest State
+        </span>
+
+        <span id="warmest-state">
+            --
+        </span>
+
+    </div>
+
+    <div class="overview-box">
+
+        <span class="overview-label">
+            Coolest State
+        </span>
+
+        <span id="coolest-state">
+            --
+        </span>
+
+    </div>
+
+    <div class="overview-box">
+
+        <span class="overview-label">
+            Regional Average
+        </span>
+
+        <span id="regional-average">
+            --°
+        </span>
+
+    </div>
+
+</div>
+
+</section>
+
+<!-- =======================================
+        FRAME 3 : MAJOR CITIES (1–10)
+======================================= -->
+
+<section class="frame" id="frame-cities-1">
+  <!-- =======================================
+        FRAME TITLE
+======================================= -->
+
+<div class="frame-title">
+
+    <h2>Major Cities</h2>
+
+    <p>Live Weather Updates</p>
+
+</div>
+
+<!-- =======================================
+        CITIES GRID
+======================================= -->
+
+<div id="cities-grid-1" class="cities-grid">
+
+    <div class="city-card" id="city-haflong">
+    <div class="city-icon" id="icon-haflong">🌤️</div>
+    <div class="city-name">Haflong</div>
+    <div class="city-temp" id="temp-haflong">--°</div>
+    <div class="city-condition" id="condition-haflong">Loading...</div>
+
+    <div class="city-meta">
+        <span>💧 <span id="humidity-haflong">--%</span></span>
+        <span>💨 <span id="wind-haflong">-- km/h</span></span>
+    </div>
+</div>
+
+   <div class="city-card" id="city-guwahati">
+    <div class="city-icon" id="icon-guwahati">☀️</div>
+    <div class="city-name">Guwahati</div>
+    <div class="city-temp" id="temp-guwahati">--°</div>
+    <div class="city-condition" id="condition-guwahati">Loading...</div>
+
+    <div class="city-meta">
+        <span>💧 <span id="humidity-guwahati">--%</span></span>
+        <span>💨 <span id="wind-guwahati">-- km/h</span></span>
+    </div>
+</div>
+
+   <div class="city-card" id="city-shillong">
+    <div class="city-icon" id="icon-shillong">🌧️</div>
+    <div class="city-name">Shillong</div>
+    <div class="city-temp" id="temp-shillong">--°</div>
+    <div class="city-condition" id="condition-shillong">Loading...</div>
+
+    <div class="city-meta">
+        <span>💧 <span id="humidity-shillong">--%</span></span>
+        <span>💨 <span id="wind-shillong">-- km/h</span></span>
+    </div>
+</div>
+
+  <div class="city-card" id="city-imphal">
+    <div class="city-icon" id="icon-imphal">🌦️</div>
+    <div class="city-name">Imphal</div>
+    <div class="city-temp" id="temp-imphal">--°</div>
+    <div class="city-condition" id="condition-imphal">Loading...</div>
+
+    <div class="city-meta">
+        <span>💧 <span id="humidity-imphal">--%</span></span>
+        <span>💨 <span id="wind-imphal">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-aizawl">
+    <div class="city-icon" id="icon-aizawl">🌥️</div>
+    <div class="city-name">Aizawl</div>
+    <div class="city-temp" id="temp-aizawl">--°</div>
+    <div class="city-condition" id="condition-aizawl">Loading...</div>
+
+    <div class="city-meta">
+        <span>💧 <span id="humidity-aizawl">--%</span></span>
+        <span>💨 <span id="wind-aizawl">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-agartala">
+    <div class="city-icon" id="icon-agartala">🌦️</div>
+    <div class="city-name">Agartala</div>
+    <div class="city-temp" id="temp-agartala">--°</div>
+    <div class="city-condition" id="condition-agartala">Loading...</div>
+
+    <div class="city-meta">
+        <span>💧 <span id="humidity-agartala">--%</span></span>
+        <span>💨 <span id="wind-agartala">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-kohima">
+    <div class="city-icon" id="icon-kohima">☁️</div>
+    <div class="city-name">Kohima</div>
+    <div class="city-temp" id="temp-kohima">--°</div>
+    <div class="city-condition" id="condition-kohima">Loading...</div>
+
+    <div class="city-meta">
+        <span>💧 <span id="humidity-kohima">--%</span></span>
+        <span>💨 <span id="wind-kohima">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-gangtok">
+    <div class="city-icon" id="icon-gangtok">❄️</div>
+    <div class="city-name">Gangtok</div>
+    <div class="city-temp" id="temp-gangtok">--°</div>
+    <div class="city-condition" id="condition-gangtok">Loading...</div>
+
+    <div class="city-meta">
+        <span>💧 <span id="humidity-gangtok">--%</span></span>
+        <span>💨 <span id="wind-gangtok">-- km/h</span></span>
+    </div>
+</div>
+
+
+<!-- =======================================
+        PAGE INDICATOR
+======================================= -->
+
+<div class="page-indicator">
+
+    <span class="page-dot active"></span>
+    <span class="page-dot"></span>
+    <span class="page-dot"></span>
+
+</div>
+
+</section>
+
+<!-- =======================================
+        FRAME 4 : MAJOR CITIES (11–20)
+======================================= -->
+
+<section class="frame" id="frame-cities-2">
+  <!-- =======================================
+        FRAME TITLE
+======================================= -->
+
+<div class="frame-title">
+
+    <h2>Major Cities</h2>
+
+    <p>Live Weather Updates</p>
+
+</div>
+
+<!-- =======================================
+        CITIES GRID
+======================================= -->
+
+<div id="cities-grid-2" class="cities-grid">
+
+<div class="city-card" id="city-itanagar">
+    <div class="city-icon" id="icon-itanagar">🌤️</div>
+    <div class="city-name">Itanagar</div>
+    <div class="city-temp" id="temp-itanagar">--°</div>
+    <div class="city-condition" id="condition-itanagar">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-itanagar">--%</span></span>
+        <span>💨 <span id="wind-itanagar">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-silchar">
+    <div class="city-icon" id="icon-silchar">🌦️</div>
+    <div class="city-name">Silchar</div>
+    <div class="city-temp" id="temp-silchar">--°</div>
+    <div class="city-condition" id="condition-silchar">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-silchar">--%</span></span>
+        <span>💨 <span id="wind-silchar">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-dimapur">
+    <div class="city-icon" id="icon-dimapur">🌤️</div>
+    <div class="city-name">Dimapur</div>
+    <div class="city-temp" id="temp-dimapur">--°</div>
+    <div class="city-condition" id="condition-dimapur">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-dimapur">--%</span></span>
+        <span>💨 <span id="wind-dimapur">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-lunglei">
+    <div class="city-icon" id="icon-lunglei">🌦️</div>
+    <div class="city-name">Lunglei</div>
+    <div class="city-temp" id="temp-lunglei">--°</div>
+    <div class="city-condition" id="condition-lunglei">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-lunglei">--%</span></span>
+        <span>💨 <span id="wind-lunglei">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-tezpur">
+    <div class="city-icon" id="icon-tezpur">☀️</div>
+    <div class="city-name">Tezpur</div>
+    <div class="city-temp" id="temp-tezpur">--°</div>
+    <div class="city-condition" id="condition-tezpur">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-tezpur">--%</span></span>
+        <span>💨 <span id="wind-tezpur">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-jorhat">
+    <div class="city-icon" id="icon-jorhat">🌥️</div>
+    <div class="city-name">Jorhat</div>
+    <div class="city-temp" id="temp-jorhat">--°</div>
+    <div class="city-condition" id="condition-jorhat">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-jorhat">--%</span></span>
+        <span>💨 <span id="wind-jorhat">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-dibrugarh">
+    <div class="city-icon" id="icon-dibrugarh">🌦️</div>
+    <div class="city-name">Dibrugarh</div>
+    <div class="city-temp" id="temp-dibrugarh">--°</div>
+    <div class="city-condition" id="condition-dibrugarh">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-dibrugarh">--%</span></span>
+        <span>💨 <span id="wind-dibrugarh">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-tinsukia">
+    <div class="city-icon" id="icon-tinsukia">☁️</div>
+    <div class="city-name">Tinsukia</div>
+    <div class="city-temp" id="temp-tinsukia">--°</div>
+    <div class="city-condition" id="condition-tinsukia">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-tinsukia">--%</span></span>
+        <span>💨 <span id="wind-tinsukia">-- km/h</span></span>
+    </div>
+</div>
+</div>
+<!-- =======================================
+        PAGE INDICATOR
+======================================= -->
+
+<div class="page-indicator">
+
+    <span class="page-dot"></span>
+    <span class="page-dot active"></span>
+    <span class="page-dot"></span>
+
+</div>
+
+</section>
+
+<!-- =======================================
+        FRAME 5 : MAJOR CITIES (21–29)
+======================================= -->
+
+<section class="frame" id="frame-cities-3">
+  <!-- =======================================
+        FRAME TITLE
+======================================= -->
+
+<div class="frame-title">
+
+    <h2>Major Cities</h2>
+
+    <p>Live Weather Updates</p>
+
+</div>
+
+<!-- =======================================
+        CITIES GRID
+======================================= -->
+
+<div id="cities-grid-3" class="cities-grid">
+  
+  <div class="city-card" id="city-bongaigaon">
+    <div class="city-icon" id="icon-bongaigaon">🌤️</div>
+    <div class="city-name">Bongaigaon</div>
+    <div class="city-temp" id="temp-bongaigaon">--°</div>
+    <div class="city-condition" id="condition-bongaigaon">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-bongaigaon">--%</span></span>
+        <span>💨 <span id="wind-bongaigaon">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-diphu">
+    <div class="city-icon" id="icon-diphu">🌦️</div>
+    <div class="city-name">Diphu</div>
+    <div class="city-temp" id="temp-diphu">--°</div>
+    <div class="city-condition" id="condition-diphu">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-diphu">--%</span></span>
+        <span>💨 <span id="wind-diphu">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-karimganj">
+    <div class="city-icon" id="icon-karimganj">🌧️</div>
+    <div class="city-name">Karimganj</div>
+    <div class="city-temp" id="temp-karimganj">--°</div>
+    <div class="city-condition" id="condition-karimganj">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-karimganj">--%</span></span>
+        <span>💨 <span id="wind-karimganj">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-dhubri">
+    <div class="city-icon" id="icon-dhubri">🌤️</div>
+    <div class="city-name">Dhubri</div>
+    <div class="city-temp" id="temp-dhubri">--°</div>
+    <div class="city-condition" id="condition-dhubri">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-dhubri">--%</span></span>
+        <span>💨 <span id="wind-dhubri">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-goalpara">
+    <div class="city-icon" id="icon-goalpara">🌤️</div>
+    <div class="city-name">Goalpara</div>
+    <div class="city-temp" id="temp-goalpara">--°</div>
+    <div class="city-condition" id="condition-goalpara">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-goalpara">--%</span></span>
+        <span>💨 <span id="wind-goalpara">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-nagaon">
+    <div class="city-icon" id="icon-nagaon">☀️</div>
+    <div class="city-name">Nagaon</div>
+    <div class="city-temp" id="temp-nagaon">--°</div>
+    <div class="city-condition" id="condition-nagaon">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-nagaon">--%</span></span>
+        <span>💨 <span id="wind-nagaon">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-sivasagar">
+    <div class="city-icon" id="icon-sivasagar">🌦️</div>
+    <div class="city-name">Sivasagar</div>
+    <div class="city-temp" id="temp-sivasagar">--°</div>
+    <div class="city-condition" id="condition-sivasagar">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-sivasagar">--%</span></span>
+        <span>💨 <span id="wind-sivasagar">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-bokakhat">
+    <div class="city-icon" id="icon-bokakhat">🌤️</div>
+    <div class="city-name">Bokakhat</div>
+    <div class="city-temp" id="temp-bokakhat">--°</div>
+    <div class="city-condition" id="condition-bokakhat">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-bokakhat">--%</span></span>
+        <span>💨 <span id="wind-bokakhat">-- km/h</span></span>
+    </div>
+</div>
+</div>
+<div class="page-indicator">
+    <span class="page-dot"></span>
+    <span class="page-dot"></span>
+    <span class="page-dot active"></span>
+    <span class="page-dot"></span>
+</div>
+</section>
+<!-- =======================================
+        FRAME 4 : MAJOR CITIES (FINAL)
+======================================= -->
+
+<section class="frame" id="frame-cities-4">
+
+<div class="frame-title">
+    <h2>Major Cities</h2>
+    <p>Live Weather Updates</p>
+</div>
+
+<div id="cities-grid-4" class="cities-grid">
+
+<div class="city-card" id="city-lumding">
+    <div class="city-icon" id="icon-lumding">🌥️</div>
+    <div class="city-name">Lumding</div>
+    <div class="city-temp" id="temp-lumding">--°</div>
+    <div class="city-condition" id="condition-lumding">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-lumding">--%</span></span>
+        <span>💨 <span id="wind-lumding">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-wokha">
+    <div class="city-icon" id="icon-wokha">☁️</div>
+    <div class="city-name">Wokha</div>
+    <div class="city-temp" id="temp-wokha">--°</div>
+    <div class="city-condition" id="condition-wokha">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-wokha">--%</span></span>
+        <span>💨 <span id="wind-wokha">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-churachandpur">
+    <div class="city-icon" id="icon-churachandpur">🌦️</div>
+    <div class="city-name">Churachandpur</div>
+    <div class="city-temp" id="temp-churachandpur">--°</div>
+    <div class="city-condition" id="condition-churachandpur">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-churachandpur">--%</span></span>
+        <span>💨 <span id="wind-churachandpur">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-pasighat">
+    <div class="city-icon" id="icon-pasighat">🌤️</div>
+    <div class="city-name">Pasighat</div>
+    <div class="city-temp" id="temp-pasighat">--°</div>
+    <div class="city-condition" id="condition-pasighat">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-pasighat">--%</span></span>
+        <span>💨 <span id="wind-pasighat">-- km/h</span></span>
+    </div>
+</div>
+
+<div class="city-card" id="city-tawang">
+    <div class="city-icon" id="icon-tawang">❄️</div>
+    <div class="city-name">Tawang</div>
+    <div class="city-temp" id="temp-tawang">--°</div>
+    <div class="city-condition" id="condition-tawang">Loading...</div>
+    <div class="city-meta">
+        <span>💧 <span id="humidity-tawang">--%</span></span>
+        <span>💨 <span id="wind-tawang">-- km/h</span></span>
+    </div>
+</div>
+
+</div>
+
+<div class="page-indicator">
+    <span class="page-dot"></span>
+    <span class="page-dot"></span>
+    <span class="page-dot"></span>
+    <span class="page-dot active"></span>
+</div>
+
+</section>
+
+<!-- =======================================
+        FRAME 6 : 7-DAY FORECAST
+======================================= -->
+
+<section class="frame" id="frame-forecast">
+
+    <div class="frame-title">
+
+        <h2>7-Day Weather Forecast</h2>
+
+       <p>7-Day Weather Forecast Across All 8 States</p>
+
+    </div>
+
+    <div id="forecast-grid">
+
+<div class="forecast-card" id="forecast-assam"></div>
+<div class="forecast-card" id="forecast-arunachal-pradesh"></div>
+<div class="forecast-card" id="forecast-manipur"></div>
+<div class="forecast-card" id="forecast-meghalaya"></div>
+<div class="forecast-card" id="forecast-mizoram"></div>
+<div class="forecast-card" id="forecast-nagaland"></div>
+<div class="forecast-card" id="forecast-sikkim"></div>
+<div class="forecast-card" id="forecast-tripura"></div>
+
+    </div>
+
+</section>
+
+<!-- =======================================
+        FRAME 7 : AIR QUALITY
+======================================= -->
+
+<section class="frame" id="frame-aqi">
+
+    <div class="frame-title">
+
+        <h2>Air Quality Index</h2>
+
+        <p>Live AQI Across All 8 States</p>
+
+    </div>
+
+<div id="aqi-grid">
+
+    <div class="aqi-card" id="aqi-assam"></div>
+    <div class="aqi-card" id="aqi-arunachal-pradesh"></div>
+    <div class="aqi-card" id="aqi-manipur"></div>
+    <div class="aqi-card" id="aqi-meghalaya"></div>
+
+    <div class="aqi-card" id="aqi-mizoram"></div>
+    <div class="aqi-card" id="aqi-nagaland"></div>
+    <div class="aqi-card" id="aqi-sikkim"></div>
+    <div class="aqi-card" id="aqi-tripura"></div>
+
+</div>
+
+</section>
+
+<!-- =======================================
+        FRAME 8 : WEATHER ALERTS
+======================================= -->
+
+<section class="frame" id="frame-alerts">
+
+    <div class="frame-title">
+
+        <h2>Weather Alerts & Tips</h2>
+
+<p>Live Alerts, Advisories & Safety Information</p>
+
+    </div>
+
+    <div id="alerts-container">
+
+        <div id="alert-card">
+
+            <div id="alert-icon">⚠️</div>
+
+            <div id="alert-title">
+
+                No Active Weather Alerts
+
+            </div>
+
+            <div id="alert-message">
+
+                Stay tuned for live weather warnings and safety advisories.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- =======================================
+                BOTTOM TICKER
+======================================= -->
+
+<footer id="footer">
+
+    <div id="ticker-label">
+
+        WEATHER NEWS
+
+    </div>
+
+    <div id="ticker-container">
+
+        <div id="ticker">
+
+            Welcome to NE Weather Live • Real-time weather updates across North East India • Data provided by Open-Meteo • Stay informed and stay safe.
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =======================================
+            LOADING SCREEN
+======================================= -->
+
+
+</main>
+
+</div>
+
+<!-- =======================================
+            JAVASCRIPT FILES
+======================================= -->
+
+<script src="config.js"></script>
+<script src="script.js"></script>
+
+</body>
+
+</html>
