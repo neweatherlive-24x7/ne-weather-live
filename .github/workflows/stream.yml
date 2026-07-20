@@ -2,9 +2,8 @@ name: 24-7 Custom Webpage Live Stream
 
 on:
   schedule:
-    # Automatically restarts the stream every 5.5 hours to beat GitHub's 6-hour limit
     - cron: '0 */5 * * *'
-  workflow_dispatch: # Allows you to start the stream manually from your phone
+  workflow_dispatch:
 
 jobs:
   stream:
@@ -28,9 +27,8 @@ jobs:
         sleep 3
 
         # 2. Open your uploaded index.html file in the virtual browser
-        # The "$GITHUB_WORKSPACE" variable tells it to find the files you uploaded
         chromium-browser --no-sandbox --disable-gpu --window-size=1920,1080 "file://$GITHUB_WORKSPACE/index.html" &
-        sleep 5
+        sleep 8
 
-        # 3. Capture the virtual monitor and encode it straight to YouTube
-        ffmpeg -f x11grab -video_size 1920x1080 -i :99.0 -c:v libx264 -preset veryfast -b:v 3000k -maxrate 3000k -bufsize 6000k -pix_fmt yuv420p -g 60 -an -f flv "rtmp://://youtube.com"
+        # 3. Capture the virtual monitor and encode it straight to YouTube (Fixed RTMP Path)
+        ffmpeg -f x11grab -video_size 1920x1080 -i :99.0 -c:v libx264 -preset veryfast -b:v 2500k -maxrate 2500k -bufsize 5000k -pix_fmt yuv420p -g 60 -an -f flv "rtmp://://youtube.com"
