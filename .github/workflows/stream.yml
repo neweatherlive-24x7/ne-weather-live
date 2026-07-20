@@ -1,0 +1,43 @@
+name: stream
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */5 * * *'
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg xvfb chromium-browser
+
+      - name: Debug secret length
+        run: |
+          echo "Stream key length: ${#YT_KEY}"
+        env:
+          YT_KEY: ${{ secrets.YT_STREAM_KEY }}
+
+      - name: Launch browser + stream
+        run: |
+          Xvfb :99 -screen 0 1280x720x24 &
+          export DISPLAY=:99
+          chromium-browser --kiosk --no-sandbox --disable-infobars "file://${{ github.workspace }}/index.html" &
+          sleep 5
+          ffmpeg -f x11grab -video_size 1280x720 -framerate 30 -i :99 \
+            -c:v libx264 -preset veryfast -b:v 2500k -maxrate 2500k -bufsize 5000k \
+            -pix_fmt yuv420p -g 60 -f flv rtmp://a.rtmp.youtube.com/live2/${{ secrets.YT_STREAM_KEY }} \
+            -t 19800
+
+      - name: Trigger next run
+        if: always()
+        run: |
+          curl -X POST -H "Authorization: token ${{ secrets.GH_PAT }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/stream.yml/dispatches \
+            -d '{"ref":"main"}'
