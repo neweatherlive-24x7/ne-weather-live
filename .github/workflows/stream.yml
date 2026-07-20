@@ -14,6 +14,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg xvfb chromium-browser
+     - name: Debug secret length
+        run: |
+          echo "Stream key length: ${#YT_KEY}"
+        env:
+          YT_KEY: ${{ secrets.YT_STREAM_KEY }}
       - name: Launch browser + stream
         run: |
           Xvfb :99 -screen 0 1280x720x24 &
