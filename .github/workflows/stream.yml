@@ -1,0 +1,36 @@
+name: 24-7 Custom Webpage Live Stream
+
+on:
+  schedule:
+    # Automatically restarts the stream every 5.5 hours to beat GitHub's 6-hour limit
+    - cron: '0 */5 * * *'
+  workflow_dispatch: # Allows you to start the stream manually from your phone
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Install Streaming Tools & Browser
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg xvfb chromium-browser
+
+    - name: Launch Local HTML and Broadcast to YouTube
+      env:
+        STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
+      run: |
+        # 1. Start a virtual monitor display canvas
+        Xvfb :99 -screen 0 1920x1080x24 &
+        export DISPLAY=:99
+        sleep 3
+
+        # 2. Open your uploaded index.html file in the virtual browser
+        # The "$GITHUB_WORKSPACE" variable tells it to find the files you uploaded
+        chromium-browser --no-sandbox --disable-gpu --window-size=1920,1080 "file://$GITHUB_WORKSPACE/index.html" &
+        sleep 5
+
+        # 3. Capture the virtual monitor and encode it straight to YouTube
+        ffmpeg -f x11grab -video_size 1920x1080 -i :99.0 -c:v libx264 -preset veryfast -b:v 3000k -maxrate 3000k -bufsize 6000k -pix_fmt yuv420p -g 60 -an -f flv "rtmp://://youtube.com"
