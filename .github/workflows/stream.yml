@@ -8,6 +8,8 @@ on:
 jobs:
   stream:
     runs-on: ubuntu-latest
+    # Force GitHub to authorize secret access for manual triggers
+    environment: production
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
