@@ -18,17 +18,15 @@ jobs:
         sudo apt-get install -y ffmpeg xvfb chromium-browser
 
     - name: Launch Local HTML and Broadcast to YouTube
-      env:
-        STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
       run: |
         # 1. Start a virtual monitor display canvas
         Xvfb :99 -screen 0 1920x1080x24 &
         export DISPLAY=:99
-        sleep 3
+        sleep 5
 
         # 2. Open your uploaded index.html file in the virtual browser
         chromium-browser --no-sandbox --disable-gpu --window-size=1920,1080 "file://$GITHUB_WORKSPACE/index.html" &
-        sleep 8
+        sleep 10
 
-        # 3. Capture the virtual monitor and encode it straight to YouTube (Fixed RTMP Path)
-        ffmpeg -f x11grab -video_size 1920x1080 -i :99.0 -c:v libx264 -preset veryfast -b:v 2500k -maxrate 2500k -bufsize 5000k -pix_fmt yuv420p -g 60 -an -f flv "rtmp://://youtube.com"
+        # 3. Capture the virtual monitor and encode it straight to YouTube
+        ffmpeg -f x11grab -video_size 1920x1080 -i :99.0 -c:v libx264 -preset veryfast -b:v 2500k -maxrate 2500k -bufsize 5000k -pix_fmt yuv420p -g 60 -an -f flv "rtmp://://youtube.com{{ secrets.YOUTUBE_STREAM_KEY }}"
